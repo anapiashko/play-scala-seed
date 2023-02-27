@@ -6,7 +6,10 @@
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index()
 GET     /nameParam/:name            controllers.HomeController.nameParam(name:String)
-POST    /add                        controllers.HomeController.addPerson
+
+# Person CRUD Controller
+GET     /gt                         controllers.PersonController.getOldestPeople
+POST    /add                        controllers.PersonController.addPerson
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

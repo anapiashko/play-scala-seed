@@ -26,9 +26,4 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   def nameParam(name: String) = Action { _ =>
       Ok(Json.obj("Hello" -> name))
   }
-
-  def addPerson = Action(parse.json) {
-    implicit request =>
-      Ok(Json.toJson(request.body))
-  }
 }
