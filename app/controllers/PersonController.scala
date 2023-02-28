@@ -1,11 +1,13 @@
 package controllers
 
 import dao.PersonDAO
-import play.api.libs.json.Json
-import play.api.mvc.{BaseController, ControllerComponents}
+import models.Person
+import play.api.libs.json.{JsArray, Json}
+import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
+
 class PersonController @Inject()(val controllerComponents: ControllerComponents,
                                  val personDAO: PersonDAO) extends BaseController {
 
@@ -13,16 +15,17 @@ class PersonController @Inject()(val controllerComponents: ControllerComponents,
     _ => Ok("Get All")
   }
 
-  def getOldestPeople = Action.async { implicit request => {
-      personDAO.getOldestPeople.map {
-        data => Ok(Json.stringify(Json.toJson(data)))
-      }
+  def getYoungestPeople = Action.async {
+    personDAO.getYoungestPeople.map {
+      data => Ok(Json.stringify(Json.toJson(data)))
     }
   }
 
-  def addPerson = Action(parse.json) {
-    implicit request =>
-      Ok(Json.toJson(request.body))
+  def savePerson: Action[AnyContent] = Action { request =>
+    val json = request.body.asJson.get
+    val person = json.as[Person]
+    val savedPerson = personDAO.savePerson(person).value
+    Ok
   }
 
 }

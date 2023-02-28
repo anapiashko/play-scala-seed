@@ -7,6 +7,7 @@ import slick.jdbc.JdbcProfile
 import slick.lifted.{TableQuery, Tag}
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 @Singleton
@@ -16,8 +17,12 @@ class PersonDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
 
   private val people = TableQuery[People]
 
-  def getOldestPeople: Future[Seq[Person]] = {
+  def getYoungestPeople: Future[Seq[Person]] = {
     dbConfig.db.run(people.sortBy(_.value.age).take(5).result)
+  }
+
+  def savePerson (person: Person): Future[Person] = {
+    dbConfig.db.run(people += person).map( _ => person)
   }
 
   private class People(tag: Tag) extends Table[Person](tag, "people") {
