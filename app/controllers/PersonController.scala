@@ -11,7 +11,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class PersonController @Inject()(val controllerComponents: ControllerComponents,
                                  val personDAO: PersonDAO) extends BaseController {
 
-  def getAll = Action {
+  def getAll: Action[AnyContent] = Action {
     _ => Ok("Get All")
   }
 
@@ -24,7 +24,12 @@ class PersonController @Inject()(val controllerComponents: ControllerComponents,
   def savePerson: Action[AnyContent] = Action { request =>
     val json = request.body.asJson.get
     val person = json.as[Person]
-    val savedPerson = personDAO.savePerson(person).value
+    val savedPerson = personDAO.savePerson(person)
+    Ok
+  }
+
+  def deletePerson(personId: Int): Action[AnyContent] = Action { request =>
+    val deletedPerson = personDAO.deletePerson(personId)
     Ok
   }
 
