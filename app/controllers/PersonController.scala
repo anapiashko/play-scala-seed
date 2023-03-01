@@ -33,4 +33,9 @@ class PersonController @Inject()(val controllerComponents: ControllerComponents,
     Ok
   }
 
+  def updatePerson(personId: Int, name: String): Action[AnyContent] = Action { request =>
+    val updatedPerson = personDAO.updatePersonName(personId, name)
+    Ok
+  }
+
 }

@@ -30,6 +30,11 @@ class PersonDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     dbConfig.db.run(query.delete)
   }
 
+  def updatePersonName(personId: Int, personName: String): Future[Int] = {
+    val query = people.filter(_.id === personId).map(_.name).update(personName)
+    dbConfig.db.run(query)
+  }
+
   private class People(tag: Tag) extends Table[Person](tag, "people") {
     def id = column[Int]("person_id", O.PrimaryKey, O.AutoInc)
 

@@ -11,6 +11,7 @@ GET     /nameParam/:name            controllers.HomeController.nameParam(name:St
 GET     /get                         controllers.PersonController.getYoungestPeople
 POST    /save                        controllers.PersonController.savePerson
 DELETE  /delete/:personId            controllers.PersonController.deletePerson(personId:Int)
+PUT     /updateName/:personId        controllers.PersonController.updatePerson(personId:Int, name:String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
